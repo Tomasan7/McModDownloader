@@ -1,0 +1,126 @@
+request-timeout-millis: 30000
+
+output-dir: ./mods
+
+loaders: [fabric, quilt]
+
+mc-versions: [1.19.1, 1.19]
+
+mods:
+  - reeses-sodium-options
+  - command-block-ide
+  - organized-tabs
+  - pick-up-notifier
+  - shulkerboxtooltip
+  - easiervillagertrading
+  - petowner
+  - ost-overhaul
+  - clickthrough
+  - alltheunobtainables
+  - roughly-enough-items
+  - blockmeter
+  - simple-discord-rpc
+  - visible-barriers
+  - resounding
+  - entityculling
+  - paperdoll
+  - wavey-capes
+  - 3dskinlayers
+  - moreculling
+  - capes
+  - indium
+  - morechathistory
+  - sodium-crash-fix
+  - amecs
+  - kappa
+  - sort
+  - jsmacros
+  - too-many-binds
+  - microdurability
+  - map-compass
+  - chatcalc
+  - vtdownloader
+  - screenshot-to-clipboard
+  - lambdabettergrass
+  - clock-hud
+  - nbt-editor
+  - betterf3
+  - purpurclient
+  - boosted-brightness
+  - stepup
+  - technomodel
+  - multiple-server-lists
+  - low-fire
+  - blur-fabric
+  - symbol-chat
+  - moderate-loading-screen
+  - enhanced-searchability
+  - better-end-sky
+  - fvt
+  - fallingleaves
+  - freecam
+  - condensed-creative
+  - draggable-resource-packs
+  - ok-zoomer
+  - norefreshscroll
+  - forcecloseworldloadingscreen
+  - blanket
+  - detail-armor-bar
+  - cms
+  - better-beds
+  - modmenu
+  - hatlist
+  - spectater
+  - cit-resewn
+  - visuality
+  - presence-footsteps
+  - worldtime
+  - lambdynamiclights
+  - fastanim
+  - camera-utils
+  - continuity
+  - sodium
+  - item-model-fix
+  - sodium-extra
+  - invmove
+  - dripsounds-fabric
+  - iris
+  - dynamiccrosshair
+  - quickconnectbutton
+  - waxednotwaxed
+  - perspektive
+  - distanthorizons
+  - gamma-utils
+  - wthit
+  - memoryleakfix
+  - smoothboot-fabric
+  - discerning-furnace
+  - suggestion-tweaker
+  - visual-overhaul
+  - lazydfu
+  - ferrite-core
+  - vmp-fabric
+  - notenoughcrashes
+  - starlight
+  - debugify
+  - krypton
+  - lithium
+
+# Not on Modrinth
+
+# Quilt Fabric API
+# Command Macros
+# Advanced X-Ray
+# Controlling
+# Item Scroller and MaliLib
+# Smooth Scrolling Everywhere
+# Toro health indicator
+# World Edit CUI
+# Xaeros minimap
+# Better Third Person
+
+# Not working
+
+# AdvancedChat
+# MultiConnect
+# All the unobtainables (requires Java 18)

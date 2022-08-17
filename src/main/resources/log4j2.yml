@@ -1,0 +1,21 @@
+Configuration:
+  status: warn
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        DisableAnsi: false
+        Pattern: "%highlight{[%level] %msg%n}{FATAL=red, ERROR=red, WARN=yellow, INFO=white, DEBUG=green, TRACE=blue}"
+    File:
+      name: File
+      fileName: moddownloaderlog.log
+      append: false
+      PatternLayout:
+        Pattern: "%msg%n"
+  Loggers:
+    Root:
+      level: all
+      AppenderRef:
+        - ref: Console
+        - ref: File
