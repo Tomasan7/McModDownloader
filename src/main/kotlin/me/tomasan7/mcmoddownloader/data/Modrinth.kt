@@ -6,6 +6,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.util.*
 import io.ktor.util.cio.*
@@ -19,6 +20,7 @@ import java.io.File
 object Modrinth
 {
     private const val ENDPOINT: String = "https://api.modrinth.com/v2"
+    private const val USER_AGENT: String = "github.com/Tomasan7/McModDownloader"
 
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
@@ -31,7 +33,7 @@ object Modrinth
 
     suspend fun getProject(projectSlugOrId: String) = try
     {
-        client.get("$ENDPOINT/project/$projectSlugOrId").body<Project>()
+        get("$ENDPOINT/project/$projectSlugOrId").body<Project>()
     }
     catch (e: NoTransformationFoundException)
     {
@@ -42,7 +44,7 @@ object Modrinth
         projectSlugOrId: String,
         loaders: List<String>? = null,
         gameVersions: List<String>? = null
-    ) = client.get("$ENDPOINT/project/$projectSlugOrId/version") {
+    ) = get("$ENDPOINT/project/$projectSlugOrId/version") {
         url {
             if (!loaders.isNullOrEmpty())
                 parameters.append("loaders", Json.encodeToString(loaders))
@@ -61,12 +63,18 @@ object Modrinth
 
     suspend fun getVersionProject(versionId: String) = getVersionProject(getVersion(versionId))
 
-    suspend fun getVersion(versionId: String) = client.get("$ENDPOINT/version/$versionId").body<Version>()
+    suspend fun getVersion(versionId: String) = get("$ENDPOINT/version/$versionId").body<Version>()
+
+    suspend fun get(path: String, block: HttpRequestBuilder.() -> Unit = {})
+    = client.get(ENDPOINT + path) {
+        header(HttpHeaders.UserAgent, USER_AGENT)
+        block()
+    }
 
     @OptIn(InternalAPI::class)
     suspend fun downloadFile(url: String, file: File, requestTimeoutMillis: Long = 10000)
     {
-        client.get(url) {
+        get(url) {
             timeout {
                 this.requestTimeoutMillis = requestTimeoutMillis
             }
