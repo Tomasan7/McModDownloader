@@ -6,6 +6,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.util.*
@@ -19,6 +20,8 @@ import java.io.File
 
 object Modrinth
 {
+    // TODO: Request timeout from config.yml is not taken into account.
+
     private const val ENDPOINT: String = "https://api.modrinth.com/v2"
     private const val USER_AGENT: String = "github.com/Tomasan7/McModDownloader"
 
@@ -33,7 +36,7 @@ object Modrinth
 
     suspend fun getProject(projectSlugOrId: String) = try
     {
-        get("$ENDPOINT/project/$projectSlugOrId").body<Project>()
+        get("/project/$projectSlugOrId").body<Project>()
     }
     catch (e: NoTransformationFoundException)
     {
@@ -44,7 +47,7 @@ object Modrinth
         projectSlugOrId: String,
         loaders: List<String>? = null,
         gameVersions: List<String>? = null
-    ) = get("$ENDPOINT/project/$projectSlugOrId/version") {
+    ) = get("/project/$projectSlugOrId/version") {
         url {
             if (!loaders.isNullOrEmpty())
                 parameters.append("loaders", Json.encodeToString(loaders))
@@ -63,7 +66,7 @@ object Modrinth
 
     suspend fun getVersionProject(versionId: String) = getVersionProject(getVersion(versionId))
 
-    suspend fun getVersion(versionId: String) = get("$ENDPOINT/version/$versionId").body<Version>()
+    suspend fun getVersion(versionId: String) = get("/version/$versionId").body<Version>()
 
     suspend fun get(path: String, block: HttpRequestBuilder.() -> Unit = {})
     = client.get(ENDPOINT + path) {
