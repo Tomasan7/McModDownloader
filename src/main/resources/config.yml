@@ -1,11 +1,25 @@
+# Time after which to give up on waiting for a server's response/download.
 request-timeout-millis: 30000
 
+# The directory where all the mods will be downloaded to.
 output-dir: ./mods
 
+# Downloads versions of the mods for these loaders.
+# Only one file per mod is downloaded.
+# There is probably only use-case where you would want to put more loaders and that is in Quilt-Fabric scenario.
 loaders: [fabric, quilt]
 
+# List of Minecraft version you want to download the mod for.
+# The versions are in order of priority.
+# If a mod doesn't have any version for the first mc version, the second will be downloaded.
+# If there is no version for the second mc version it will look for the third and so on.
+# Mostly useful for mods, whose 1.19 version works for both 1.19 and 1.19.1
+# That's how libraries often work.
 mc-versions: [1.19.1, 1.19]
 
+# The ids/slugs of the mods you want to download.
+# The slug can be found in the URL of the mod.
+# Example https://modrinth.com/mod/sodium, slug is sodium.
 mods:
   - reeses-sodium-options
   - command-block-ide
