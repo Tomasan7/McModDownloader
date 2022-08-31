@@ -14,7 +14,7 @@ import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
 
-val logger: Logger = LogManager.getLogger()
+val logger: Logger = LogManager.getLogger(object {}.javaClass.enclosingClass)
 
 suspend fun main()
 {
