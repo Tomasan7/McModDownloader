@@ -77,7 +77,7 @@ object Modrinth
     @OptIn(InternalAPI::class)
     suspend fun downloadFile(url: String, file: File, requestTimeoutMillis: Long = 10000)
     {
-        get(url) {
+        client.get(url) {
             timeout {
                 this.requestTimeoutMillis = requestTimeoutMillis
             }
