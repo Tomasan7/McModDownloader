@@ -1,4 +1,4 @@
-# Time after which to give up on waiting for a server's response/download.
+# Time after which to give up on waiting for a mod to download.
 request-timeout-millis: 30000
 
 # The directory where all the mods will be downloaded to.
