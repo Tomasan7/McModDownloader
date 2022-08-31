@@ -31,9 +31,9 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
 
-    implementation("com.jcabi:jcabi-log:0.22.0")
-
     testImplementation(kotlin("test"))
+
+    implementation("org.fusesource.jansi:jansi:2.4.0")
 }
 
 tasks.test {

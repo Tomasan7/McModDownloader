@@ -9,6 +9,7 @@ import me.tomasan7.mcmoddownloader.data.project.Project
 import me.tomasan7.mcmoddownloader.data.version.Version
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.fusesource.jansi.AnsiConsole
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
@@ -17,6 +18,8 @@ val logger: Logger = LogManager.getLogger()
 
 suspend fun main()
 {
+    AnsiConsole.systemInstall()
+
     val configFile = File("./config.yml")
 
     if (!configFile.exists())
