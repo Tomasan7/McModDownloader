@@ -42,21 +42,20 @@ suspend fun main()
 
         for (mod in mods)
         {
+            // To prevent rate limiting.
             delay(1000)
-            launch {
-                val resultModVersion = decideVersion(Modrinth.getProjectVersions(mod, config.loaders, config.mcVersions), config.mcVersions)
-                if (resultModVersion == null)
-                {
-                    logger.warn("No suitable version found for ${mod.title}.")
-                    return@launch
-                }
-
-                val versionRequiredDependencies = getVersionRequiredDependencies(resultModVersion)
-                dependencies[mod] = versionRequiredDependencies
-
-                logger.info("Downloading ${mod.title}, version ${resultModVersion.version_number}...")
-                downloadVersion(resultModVersion, modsDir, config.requestTimeoutMillis) { logger.info("Downloaded ${mod.title}, version ${resultModVersion.version_number}.") }
+            val resultModVersion = decideVersion(Modrinth.getProjectVersions(mod, config.loaders, config.mcVersions), config.mcVersions)
+            if (resultModVersion == null)
+            {
+                logger.warn("No suitable version found for ${mod.title}.")
+                continue
             }
+
+            val versionRequiredDependencies = getVersionRequiredDependencies(resultModVersion)
+            dependencies[mod] = versionRequiredDependencies
+
+            logger.info("Downloading ${mod.title}, version ${resultModVersion.version_number}...")
+            downloadVersion(resultModVersion, modsDir, config.requestTimeoutMillis) { logger.info("Downloaded ${mod.title}, version ${resultModVersion.version_number}.") }
         }
     }
 
@@ -68,21 +67,23 @@ suspend fun main()
             dependenciesFinal[dependency] = dependencies.filter { it.value.contains(dependency) }.keys
 
         for (dependency in dependenciesFinal.keys)
-            launch {
-                val resultDependencyVersion = decideVersion(Modrinth.getProjectVersions(dependency, config.loaders, config.mcVersions), config.mcVersions)
-                val requiredBy = dependenciesFinal[dependency]!!
-                val requiredByStr = requiredBy.joinToString { it.title }
-                if (resultDependencyVersion == null)
-                {
-                    logger.warn("No suitable version found for dependency ${dependency.title} required by $requiredByStr.")
-                    return@launch
-                }
-
-                logger.info("Downloading dependency ${dependency.title}, version ${resultDependencyVersion.version_number}, required by $requiredByStr...")
-                downloadVersion(resultDependencyVersion, modsDir, config.requestTimeoutMillis) {
-                    logger.info("Downloaded dependency ${dependency.title}, version ${resultDependencyVersion.version_number}, required by $requiredByStr.")
-                }
+        {
+            // To prevent rate limiting.
+            delay(1000)
+            val resultDependencyVersion = decideVersion(Modrinth.getProjectVersions(dependency, config.loaders, config.mcVersions), config.mcVersions)
+            val requiredBy = dependenciesFinal[dependency]!!
+            val requiredByStr = requiredBy.joinToString { it.title }
+            if (resultDependencyVersion == null)
+            {
+                logger.warn("No suitable version found for dependency ${dependency.title} required by $requiredByStr.")
+                continue
             }
+
+            logger.info("Downloading dependency ${dependency.title}, version ${resultDependencyVersion.version_number}, required by $requiredByStr...")
+            downloadVersion(resultDependencyVersion, modsDir, config.requestTimeoutMillis) {
+                logger.info("Downloaded dependency ${dependency.title}, version ${resultDependencyVersion.version_number}, required by $requiredByStr.")
+            }
+        }
     }
 
     logger.info("Done.")
@@ -169,7 +170,10 @@ suspend fun getVersionRequiredDependencies(version: Version): Set<Project> = cor
     return@coroutineScope dependenciesProjects.toSet()
 }
 
-suspend fun downloadVersion(version: Version, destinationDir: File, requestTimeoutMillis: Long, onComplete: () -> Unit = {})
+suspend fun downloadVersion(
+    version: Version, destinationDir: File,
+    requestTimeoutMillis: Long,
+    onComplete: () -> Unit = {})
 {
     val versionFile = version.files.find { it.primary } ?: run {
         logger.warn("No primary file found for ${version.name}.")
