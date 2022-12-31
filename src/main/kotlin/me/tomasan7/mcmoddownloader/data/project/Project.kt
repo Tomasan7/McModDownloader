@@ -14,7 +14,7 @@ data class Project(
     val downloads: Int,
     val followers: Int,
     val gallery: List<Gallery>,
-    val icon_url: String,
+    val icon_url: String?,
     val id: String,
     val issues_url: String?,
     val license: License,
